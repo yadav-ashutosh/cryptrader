@@ -1,0 +1,1 @@
+# class if all strategies
