@@ -1,4 +1,5 @@
 #import
+import csv
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,7 +9,9 @@ plt.style.use('fivethirtyeight')
 #date set
 start_date = '2018-01-01'
 end_date = '2021-01-01'
-goog_data = data.DataReader('GOOG', 'yahoo', start_date, end_date)
+with open('dataset.csv', 'rb') as csvfile:
+  goog_data=csv.reader(csvfile, delimiter=' ', quotechar='|')
+  
 #data check
 print(goog_data)
 #plot check
