@@ -1,18 +1,21 @@
-#import
-import csv
+# imports
+
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from pandas_datareader import data
+
+#unecessary imports
+import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 
 #date set
-start_date = '2018-01-01'
-end_date = '2021-01-01'
-with open('dataset.csv', 'rb') as csvfile:
-  goog_data=csv.reader(csvfile, delimiter=' ', quotechar='|')
+# start_date = '2018-01-01'
+# end_date = '2021-01-01'
+# with open('dataset.csv', 'rb') as csvfile:
+#   goog_data=csv.reader(csvfile, delimiter=' ', quotechar='|')
   
 #data check
+goog_data = pd.read_csv("database.csv") 
 print(goog_data)
 #plot check
 plt.figure(figsize=(12.2 , 4.5))
@@ -21,11 +24,11 @@ plt.plot(goog_data['Close'])
 plt.show()
 #3 moving average
 # fast wala
-ShrortEMA =goog_data.Close.ewm(span =5 , adjust = False).mean()
-#medium
-medEMA = goog_data.Close.ewm(span = 21 , adjust = False).mean()
-#long
-LongEMA = goog_data.Close.ewm(span=63 , adjust=False ).mean()
+# ShrortEMA =goog_data.Close.ewm(span =5 , adjust = False).mean()
+# #medium
+# medEMA = goog_data.Close.ewm(span = 21 , adjust = False).mean()
+# #long
+# LongEMA = goog_data.Close.ewm(span=63 , adjust=False ).mean()
 
 #display the moving averages
 plt.figure(figsize=(18 , 8))
@@ -83,3 +86,32 @@ plt.plot(medEMA,label = 'Short graph', color = 'green', alpha=0.35)
 plt.scatter(goog_data.index ,goog_data['Buy'] , color='green' , marker='^' , alpha=1)
 plt.scatter(goog_data.index ,goog_data['Sell'] , color='red' , marker='v' , alpha=1)
 plt.show()
+
+def strategy(flag):
+  #flag is a boolean variable which we can add in future for increasing efficiency
+  #if function returns -1 do NOTHING
+  #if function returns 0 SELL
+  #if function returns 1 BUY
+  goog_data = pd.read_csv("database.csv") 
+  #3 moving average
+  # fast wala
+  ShrortEMA =goog_data.Close.ewm(span =5 , adjust = False).mean()
+  #medium
+  medEMA = goog_data.Close.ewm(span = 21 , adjust = False).mean()
+  #long
+  LongEMA = goog_data.Close.ewm(span=63 , adjust=False ).mean()
+  #vars 
+  goog_data['Short'] = ShrortEMA
+  goog_data['Medium']= medEMA
+  goog_data['Long'] = LongEMA
+  #check
+  goog_data['Buy'] = buy_or_sell(goog_data)[0]
+  goog_data['Sell'] = buy_or_sell(goog_data)[1]
+   #logic
+  if goog_data['Sell'].iloc[-1] == -1:
+    if goog_data['Buy'].iloc[-1] == -1:
+      return -1
+    else:
+      return 1  
+  else:
+    return 0  
