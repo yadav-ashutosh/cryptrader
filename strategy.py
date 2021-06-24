@@ -83,3 +83,23 @@ plt.plot(medEMA,label = 'Short graph', color = 'green', alpha=0.35)
 plt.scatter(goog_data.index ,goog_data['Buy'] , color='green' , marker='^' , alpha=1)
 plt.scatter(goog_data.index ,goog_data['Sell'] , color='red' , marker='v' , alpha=1)
 plt.show()
+
+#staratey function 
+def strategy(flag):
+  
+  #flag is a boolean variable which we can add in future for increasing efficiency
+  #if function returns -1 do NOTHING
+  #if function returns 0 SELL
+  #if function returns 1 BUY
+
+  goog_data['Buy'] = buy_or_sell(goog_data)[0]
+  goog_data['Sell'] = buy_or_sell(goog_data)[1]
+
+  if goog_data['Sell'].iloc[-1] == -1:
+    if goog_data['Buy'].iloc[-1] == -1:
+      return -1
+    else:
+      return 1  
+  else:
+    return 0  
+
