@@ -51,23 +51,23 @@ def buy_or_sell(data):
     for i in range(0 , len(data)):
         if data['Medium'][i] < data['Long'][i] and data['Short'][i] < data['Medium'][i] and flag_long == False and flag_short == False:
             buy_list.append(data['price'][i])
-            sell_list.append(np.nan)
+            sell_list.append(-1)
             flag_short = True
         elif flag_short == True and data['Short'][i]>data['Medium'][i]:
-            buy_list.append(np.nan)
+            buy_list.append(-1)
             sell_list.append(data['price'][i]) 
             flag_short = False
         elif data['Medium'][i] > data['Long'][i] and data['Short'][i] > data['Medium'][i] and flag_long == False and flag_short == False:
             buy_list.append(data['price'][i])
-            sell_list.append(np.nan)
+            sell_list.append(-1)
             flag_long = True
         elif flag_long == True and data['Short'][i]<data['Medium'][i]:
-            buy_list.append(np.nan)
+            buy_list.append(-1)
             sell_list.append(data['price'][i]) 
             flag_long = False 
         else:
-            buy_list.append(np.nan)
-            sell_list.append(np.nan)  
+            buy_list.append(-1)
+            sell_list.append(-1)  
     return (buy_list , sell_list)
 
 if __name__=='__main__':
